@@ -6,14 +6,16 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "gen": "npx supabase gen types typescript --project-id \"jexuovdzzocyqxivuijy \" --schema public > types/supabase.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.45.2",
     "@tanstack/react-query": "^5.52.2",
     "next": "14.2.6",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "supabase": ">=1.8.1"
   },
   "devDependencies": {
     "@types/node": "^20",

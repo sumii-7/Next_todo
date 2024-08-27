@@ -2,12 +2,10 @@
 
 import { useRef, useState } from "react";
 import { supabase } from "../utils/supabase/client";
+import { useQuery } from "@tanstack/react-query";
+import { Tables } from "@/types/supabase";
 
-interface listType {
-  // id: number;
-  list: string | undefined;
-  isDone: boolean;
-}
+export type List = Tables<"list">;
 
 export default function Home() {
   // const [todoList, setTodoList] = useState<listType[]>([]);
@@ -41,9 +39,15 @@ export default function Home() {
     }
   };
 
-  const allList = async () => {
-    const { data: allTodoList } = await supabase.from("list").select("*");
+  const allList = async (): Promise<List[]> => {
+    const { data } = await supabase.from("list").select("*");
+    return data || [];
   };
+
+  const { data: allTodoList = [] } = useQuery<List[]>({
+    queryKey: ["todos"],
+    queryFn: allList,
+  });
 
   return (
     <>
@@ -61,7 +65,7 @@ export default function Home() {
             />
             <button className="ml-2 bg-blue-200 p-1 rounded-md">등록</button>
           </form>
-          {/* <div>{todoList.map((list) => list.list)}</div> */}
+          <div>{allTodoList.map((list) => list.list)}</div>
         </div>
       </div>
     </>
