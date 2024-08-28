@@ -52,7 +52,7 @@ export default function Home() {
   return (
     <>
       <div className="border border-blue-500 w-[80%] mx-auto p-4">
-        <div className="flex flex-col justify-center mx-auto w-[90%]">
+        <div className="flex flex-col justify-center mx-auto w-[90%] border border-blue-500">
           <h1 className="flex justify-center text-3xl mb-5">수미의 todolist</h1>
           <form
             className="flex justify-center w-[90%] mx-auto"
@@ -63,9 +63,11 @@ export default function Home() {
               ref={listRef}
               className="border rounded-md outline-none indent-2"
             />
-            <button className="ml-2 bg-blue-200 p-1 rounded-md">등록</button>
+            <button className="ml-2 p-1 rounded-md">등록</button>
           </form>
-          <div>{allTodoList.map((list) => list.list)}</div>
+          <div className="bg-red-200 w-[50%] mx-auto">
+            {allTodoList.map((list) => list.list)}
+          </div>
         </div>
       </div>
     </>
