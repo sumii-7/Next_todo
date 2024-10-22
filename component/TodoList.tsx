@@ -12,6 +12,8 @@ export default function TodoList() {
   const listRef = useRef<HTMLInputElement>(null);
   const [restart, setRestart] = useState<boolean>(false);
 
+  const { data: allTodoList } = useAllTodoList(restart);
+
   /** 리스트 추가 함수 */
   const addList = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,14 +32,16 @@ export default function TodoList() {
     }
   };
 
-  const { data: allTodoList } = useAllTodoList(restart);
-
   const { mutate: addTodoList } = useMutation({
     mutationFn: addList,
     onSuccess: () => {
       setRestart(!restart);
     },
   });
+
+  const completeTodo = async (id: string) => {
+    await supabase.from("list").update({ isDone: true }).eq("id", id);
+  };
 
   return (
     <>
@@ -61,8 +65,15 @@ export default function TodoList() {
             {allTodoList?.map((list) => (
               <div key={list.id} className="flex justify-between">
                 <label className="flex gap-2 justify-center">
-                  <input type="checkbox" />
-                  <div>{list.list}</div>
+                  <input
+                    type="checkbox"
+                    onClick={() => {
+                      completeTodo(list.id);
+                    }}
+                  />
+                  <div className={list.isDone ? "line-through" : ""}>
+                    {list.list}
+                  </div>
                 </label>
                 <button>수정</button>
               </div>
